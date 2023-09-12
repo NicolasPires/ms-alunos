@@ -1,0 +1,239 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1-SNAPSHOT
+  title: API Cadastro de Alunos
+  description: Api de cadastro de alunos - Arq Hexagona
+servers:
+  - description: 'Ambiente de produção'
+    url: 'https://msalunos.nksolucoes.com'
+  - description: 'Ambiente de local de desenvolvimento'
+    url: 'https://localhost:8080'
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Nk-Solucoes/ms-alunos/0.0.1-SNAPSHOT
+
+
+paths:
+  /students:
+    get:
+      operationId: getStudents
+      summary: Busca todos os Alunos
+      tags:
+        - Students
+      parameters:
+        - schema:
+            type: string
+            example: 'Nome Aluno'
+          name: title
+          description: 'Titulo'
+          in: query
+          required: false
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentsSummary'
+    post:
+      operationId: createStudents
+      summary: Cria um novo Aluno
+      tags:
+        - Students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentsInput'
+      responses:
+        '201':
+          description: Aluno criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /students/{studentId}:
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: studentId
+        in: path
+        required: true
+    get:
+      operationId: getStudentsById
+      summary: Busca um Aluno por ID
+      tags:
+        - Students
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateStudent
+      summary: Atualiza um Student
+      tags:
+        - Students
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentsInput'
+      responses:
+        '204':
+          description: 'Lembrete atualizado'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: removeStudent
+      summary: Remove um Student
+      tags:
+        - Students
+      responses:
+        '204':
+          description: 'Lembrete removido'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+tags:
+  - name: Students
+    description: Alunos
+
+security:
+  - ApiKey: [ ]
+
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: X-Authorization
+      in: header
+      description: 'Token de autenticação'
+  responses:
+    NotFound:
+      description: 'Recurso não encontrado'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    BadRequest:
+      description: 'Requisição invalida'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    InternalServerError:
+      description: 'Erro interno do servidor'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+  schemas:
+    StudentsDetail:
+      description: 'Aluno detalhado'
+      type: object
+      required:
+        - id
+        - name
+        - school
+        - date
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Fulano de Tal'
+        school:
+          type: string
+          example: 'Escola Estadual Teste'
+        date:
+          type: string
+          format: date
+          example: '2022-01-01'
+    StudentsSummary:
+      description: 'Aluno resumido'
+      type: object
+      required:
+        - id
+        - name
+        - date
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Fulano de Tal'
+        date:
+          type: string
+          format: date
+          example: '2022-01-01'
+    StudentsInput:
+      description: 'Modelo para criação ou alteração de um aluno'
+      type: object
+      required:
+        - name
+        - school
+        - date
+      properties:
+        name:
+          type: string
+          example: 'Fulano de Tal'
+        school:
+          type: string
+          example: 'Escola Estadual Teste'
+        date:
+          type: string
+          format: date
+          example: '2022-01-01'
+    ErrorMessage:
+      description: 'Representa um modelo de erro na requisicao'
+      type: object
+      required:
+        - status
+        - timestamp
+        - error
+        - message
+        - path
+      properties:
+        status:
+          type: integer
+          format: int64
+          example: 400
+        timestamp:
+          type: string
+          format: date
+          example: '2022-11-01-T18:09:02Z'
+        error:
+          type: string
+          example: 'Dados inálidos'
+        messagem:
+          type: string
+          example: "Um ou mais campos estão inválidos"
+        path:
+          type: string
+          example: '/path'
