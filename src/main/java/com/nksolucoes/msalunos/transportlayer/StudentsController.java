@@ -1,4 +1,4 @@
-package com.nksolucoes.msalunos.transportlayer.controller;
+package com.nksolucoes.msalunos.transportlayer;
 
 import com.nksolucoes.msalunos.entities.Student;
 import com.nksolucoes.msalunos.interactors.StudentsUseCase;
