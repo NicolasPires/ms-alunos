@@ -21,6 +21,7 @@
 		<swagger-annotations.version>2.2.11</swagger-annotations.version>
 		<jackson-databind.version>0.2.6</jackson-databind.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.1.0</springdoc-openapi-starter-webmvc-ui.version>
+		<feign.version>4.0.4</feign.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -78,6 +79,12 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>${jackson-databind.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>${feign.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

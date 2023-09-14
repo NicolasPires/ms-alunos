@@ -1,7 +1,9 @@
 package com.nksolucoes.msalunos.interactors;
 
 import com.nksolucoes.msalunos.entities.Student;
+import com.nksolucoes.msalunos.repository.DisciplinesRepository;
 import com.nksolucoes.msalunos.repository.StudentsRepository;
+import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,11 @@ public class StudentsUseCase {
 
     private final StudentsRepository studentsRepository;
 
-    public StudentsUseCase(StudentsRepository studentsRepository) {
+    private final DisciplinesRepository disciplinesRepository;
+
+    public StudentsUseCase(StudentsRepository studentsRepository, DisciplinesRepository disciplinesRepository) {
         this.studentsRepository = studentsRepository;
+        this.disciplinesRepository = disciplinesRepository;
     }
 
     public List<Student> getAll() {return this.studentsRepository.getAll();}
