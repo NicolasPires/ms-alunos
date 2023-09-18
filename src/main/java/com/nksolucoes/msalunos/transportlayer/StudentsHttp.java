@@ -18,12 +18,11 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
-public class StudentsController implements StudentsApi {
+public class StudentsHttp implements StudentsApi {
 
     private final StudentsUseCase studentsUseCase;
 
-
-    public StudentsController(StudentsUseCase studentsUseCase) {
+    public StudentsHttp(StudentsUseCase studentsUseCase) {
         this.studentsUseCase = studentsUseCase;
     }
 

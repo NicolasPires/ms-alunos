@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -12,9 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class DisciplinesResponse {
-    private Long id;
+    private Long disciplineId;
     private String name;
     private String grade;
-    private Date createDate;
-
 }

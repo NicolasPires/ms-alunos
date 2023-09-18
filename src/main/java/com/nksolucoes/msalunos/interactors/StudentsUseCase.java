@@ -42,7 +42,7 @@ public class StudentsUseCase {
 
         if (!Objects.isNull(studentData)){
           return this.studentsRepository.updateStudent(Student.builder()
-                  .id(studentData.getId())
+                  .studentId(studentData.getStudentId())
                   .name(student.getName())
                   .school(student.getSchool())
                   .date(student.getDate())
@@ -61,5 +61,9 @@ public class StudentsUseCase {
             throw new RuntimeException("Unable to find student for delete");
         }
 
+    }
+
+    public List<DisciplinesResponse> getAllDisciplines() {
+        return disciplinesRepository.getAll();
     }
 }

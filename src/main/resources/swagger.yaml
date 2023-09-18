@@ -115,10 +115,39 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /disciplines:
+    get:
+      operationId: getDisciplines
+      summary: Busca todos as Disciplinas
+      tags:
+        - Disciplines
+      parameters:
+        - schema:
+            type: string
+            example: 'Nome Disciplina'
+          name: title
+          description: 'Titulo'
+          in: query
+          required: false
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisciplinesDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
 tags:
   - name: Students
     description: Alunos
+  - name: Disciplines
+    description: Disciplinas
 
 security:
   - ApiKey: [ ]
@@ -154,12 +183,12 @@ components:
       description: 'Aluno detalhado'
       type: object
       required:
-        - id
+        - studentId
         - name
         - school
         - date
       properties:
-        id:
+        studentId:
           type: integer
           format: int64
           example: 1
@@ -173,15 +202,33 @@ components:
           type: string
           format: date
           example: '2022-01-01'
+        disciplines:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisciplinesDetail'
+    DisciplinesDetail:
+      type: object
+      properties:
+        disciplineId:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Matematica'
+        grade:
+          type: integer
+          format: int64
+          example: 10
     StudentsSummary:
       description: 'Aluno resumido'
       type: object
       required:
-        - id
+        - studentId
         - name
         - date
       properties:
-        id:
+        studentId:
           type: integer
           format: int64
           example: 1

@@ -16,6 +16,8 @@ public interface StudentsMapper {
 
     Student map(StudentsInput studentsInput);
 
+    Student mapStudentDetail(StudentsDetail studentsDetail);
+
     StudentsDetail mapDetail(Student student);
 
     StudentsSummary mapSummary(Student student);
@@ -37,5 +39,7 @@ public interface StudentsMapper {
         }
         return studentsSummaryList;
     }
+
+
 
 }

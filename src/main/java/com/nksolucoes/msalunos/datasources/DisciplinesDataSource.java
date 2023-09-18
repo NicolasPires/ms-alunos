@@ -18,7 +18,6 @@ public class DisciplinesDataSource implements DisciplinesRepository {
 
     @Override
     public List<DisciplinesResponse> getAll() {
-        List<DisciplinesResponse> disciplinesResponses = this.disciplinesClient.getDisciplines();
-        return disciplinesResponses;
+        return this.disciplinesClient.getDisciplines();
     }
 }
