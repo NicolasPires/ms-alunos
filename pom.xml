@@ -22,7 +22,8 @@
 		<jackson-databind.version>0.2.6</jackson-databind.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.1.0</springdoc-openapi-starter-webmvc-ui.version>
 		<feign.version>4.0.4</feign.version>
-		<resilience4j.version>1.7.1</resilience4j.version>
+		<resilience4j.version>2.1.0</resilience4j.version>
+		<spring-boot-starter-actuator.version>3.1.3</spring-boot-starter-actuator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -87,14 +88,18 @@
 		</dependency>
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
-			<artifactId>resilience4j-spring-boot2</artifactId>
+			<artifactId>resilience4j-spring-boot3</artifactId>
 			<version>${resilience4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>${spring-boot-starter-actuator.version}</version>
+		</dependency>
 
 	</dependencies>
 
