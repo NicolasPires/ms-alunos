@@ -4,6 +4,7 @@ import com.nksolucoes.msalunos.datasources.DisciplinesDataSource;
 import com.nksolucoes.msalunos.entities.Student;
 import com.nksolucoes.msalunos.repository.DisciplinesRepository;
 import com.nksolucoes.msalunos.repository.StudentsRepository;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesDetail;
 import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +71,14 @@ public class StudentsUseCase {
 
     public List<DisciplinesResponse> getAllDisciplines() {
        return disciplinesRepository.getAll();
+    }
+
+    public DisciplinesResponse getDisciplneById(Long disciplineId) {
+        DisciplinesResponse disciplinesResponse = this.disciplinesRepository.getDisciplineById(disciplineId);
+        if (Objects.isNull(disciplinesResponse)) {
+            new RuntimeException("No content Discipline!");
+        }
+        return disciplinesResponse;
     }
 
 

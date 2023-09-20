@@ -50,3 +50,5 @@ resilience4j.circuitbreaker:
   instances:
     DISCIPLINES_CB:
       baseConfig: default
+    DISCIPLINES_ALL_CB:
+      baseConfig: default

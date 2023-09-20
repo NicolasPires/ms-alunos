@@ -142,6 +142,29 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /disciplines/{disciplineId}:
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: disciplineId
+        in: path
+        required: true
+    get:
+      operationId: getDisciplineById
+      summary: Busca uma Disciplina por ID
+      tags:
+        - Disciplines
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisciplinesDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
 
 tags:
   - name: Students

@@ -31,6 +31,14 @@ public class DisciplinesHttp implements DisciplinesApi {
     }
 
     @Override
+    public ResponseEntity<DisciplinesDetail> getDisciplineById(Long disciplineId) {
+        DisciplinesResponse disciplinesResponse = null;
+        disciplinesResponse = studentsUseCase.getDisciplneById(disciplineId);
+
+        return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapDisciplineDetail(disciplinesResponse));
+    }
+
+    @Override
     public ResponseEntity<List<DisciplinesDetail>> getDisciplines(String title) {
         List<DisciplinesResponse> disciplinesResponses = studentsUseCase.getAllDisciplines();
         return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapListDisciplinesDetail(disciplinesResponses));

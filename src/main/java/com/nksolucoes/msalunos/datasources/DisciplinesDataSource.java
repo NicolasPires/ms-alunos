@@ -19,27 +19,34 @@ public class DisciplinesDataSource implements DisciplinesRepository {
 
     private final DisciplinesClient disciplinesClient;
 
-    private final Map<Integer, List<DisciplinesResponse>> CACHE = new HashMap<>();
+    private Map<Long, DisciplinesResponse> CACHE = new HashMap<>();
 
     public DisciplinesDataSource(DisciplinesClient disciplinesClient) {
         this.disciplinesClient = disciplinesClient;
     }
 
     @Override
-    @CircuitBreaker(name = "DISCIPLINES_CB")
+    @CircuitBreaker(name = "DISCIPLINES_ALL_CB")
     public List<DisciplinesResponse> getAll() {
-        Integer contador = 1;
-        List<DisciplinesResponse> disciplinesResponses = new ArrayList<>();
+        return  this.disciplinesClient.getDisciplines();
+    }
 
-        LOGGER.info("Buscando as disciplinas");
-        disciplinesResponses = this.disciplinesClient.getDisciplines();
+    @Override
+    @CircuitBreaker(name = "DISCIPLINES_CB", fallbackMethod = "getAllFallBack")
+    public DisciplinesResponse getDisciplineById(Long disciplineId) {
+        DisciplinesResponse disciplinesResponse = null;
+
+        LOGGER.info("Buscando a disciplina por Id");
+        disciplinesResponse = this.disciplinesClient.getDisciplinesById(disciplineId);
 
         LOGGER.info("Alimentando Cache");
-        if (!CACHE.isEmpty()) {
-             contador++;
-        }
-        CACHE.put(contador, disciplinesResponses);
+        CACHE.put(disciplineId, disciplinesResponse);
 
-        return disciplinesResponses;
+        return disciplinesResponse;
+    }
+
+    private DisciplinesResponse getAllFallBack(Long disciplineId, Throwable ex) {
+        LOGGER.info("Buscando do Cache");
+        return CACHE.getOrDefault(disciplineId, DisciplinesResponse.builder().build());
     }
 }

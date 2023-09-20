@@ -12,4 +12,7 @@ public interface DisciplinesClient {
     @GetMapping
     List<DisciplinesResponse> getDisciplines();
 
+    @GetMapping
+    DisciplinesResponse getDisciplinesById(@PathVariable Long disciplineId);
+
 }
