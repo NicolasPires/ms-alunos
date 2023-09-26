@@ -1,15 +1,9 @@
 package com.nksolucoes.msalunos.interactors;
 
-import com.nksolucoes.msalunos.datasources.DisciplinesDataSource;
 import com.nksolucoes.msalunos.entities.Student;
 import com.nksolucoes.msalunos.repository.DisciplinesRepository;
 import com.nksolucoes.msalunos.repository.StudentsRepository;
-import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesDetail;
-import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesOutput;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,14 +12,10 @@ import java.util.*;
 
 @Service
 public class StudentsUseCase {
-
     private final StudentsRepository studentsRepository;
 
-    private final DisciplinesRepository disciplinesRepository;
-
-    public StudentsUseCase(StudentsRepository studentsRepository, DisciplinesRepository disciplinesRepository) {
+    public StudentsUseCase(StudentsRepository studentsRepository) {
         this.studentsRepository = studentsRepository;
-        this.disciplinesRepository = disciplinesRepository;
     }
 
     public List<Student> getAll() {return this.studentsRepository.getAll();}
@@ -67,19 +57,5 @@ public class StudentsUseCase {
         }
 
     }
-
-
-    public List<DisciplinesResponse> getAllDisciplines() {
-       return disciplinesRepository.getAll();
-    }
-
-    public DisciplinesResponse getDisciplneById(Long disciplineId) {
-        DisciplinesResponse disciplinesResponse = this.disciplinesRepository.getDisciplineById(disciplineId);
-        if (Objects.isNull(disciplinesResponse)) {
-            new RuntimeException("No content Discipline!");
-        }
-        return disciplinesResponse;
-    }
-
 
 }

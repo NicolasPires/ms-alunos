@@ -1,47 +1,51 @@
 package com.nksolucoes.msalunos.transportlayer;
 
-import com.nksolucoes.msalunos.entities.Student;
-import com.nksolucoes.msalunos.interactors.StudentsUseCase;
+import com.nksolucoes.msalunos.interactors.DisciplinesUseCase;
 import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesDetail;
-import com.nksolucoes.msalunos.transportlayer.documentacao.model.StudentsDetail;
-import com.nksolucoes.msalunos.transportlayer.documentacao.model.StudentsInput;
-import com.nksolucoes.msalunos.transportlayer.documentacao.model.StudentsSummary;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesInput;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesOutput;
 import com.nksolucoes.msalunos.transportlayer.documentacao.openapi.DisciplinesApi;
-import com.nksolucoes.msalunos.transportlayer.documentacao.openapi.StudentsApi;
 import com.nksolucoes.msalunos.transportlayer.mappers.DisciplinesMapper;
-import com.nksolucoes.msalunos.transportlayer.mappers.StudentsMapper;
-import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
 public class DisciplinesHttp implements DisciplinesApi {
 
-    private final StudentsUseCase studentsUseCase;
+    private final DisciplinesUseCase disciplinesUseCase;
 
-    public DisciplinesHttp(StudentsUseCase studentsUseCase) {
-        this.studentsUseCase = studentsUseCase;
+    public DisciplinesHttp(DisciplinesUseCase disciplinesUseCase) {
+        this.disciplinesUseCase = disciplinesUseCase;    }
+
+
+    @Override
+    public ResponseEntity<DisciplinesDetail> createDisciplines(DisciplinesInput disciplinesInput) {
+        DisciplinesOutput disciplinesOutput = null;
+        disciplinesOutput = disciplinesUseCase.createDiscipline(disciplinesInput);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(DisciplinesMapper.INSTANCE.mapDisciplineDetail(disciplinesOutput));
     }
 
     @Override
     public ResponseEntity<DisciplinesDetail> getDisciplineById(Long disciplineId) {
-        DisciplinesResponse disciplinesResponse = null;
-        disciplinesResponse = studentsUseCase.getDisciplneById(disciplineId);
+        DisciplinesOutput disciplinesOutput = null;
+        disciplinesOutput = disciplinesUseCase.getDisciplneById(disciplineId);
 
-        return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapDisciplineDetail(disciplinesResponse));
+        return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapDisciplineDetail(disciplinesOutput));
     }
 
     @Override
     public ResponseEntity<List<DisciplinesDetail>> getDisciplines(String title) {
-        List<DisciplinesResponse> disciplinesResponses = studentsUseCase.getAllDisciplines();
-        return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapListDisciplinesDetail(disciplinesResponses));
+        List<DisciplinesOutput> disciplinesOutput = disciplinesUseCase.getAllDisciplines();
+        return ResponseEntity.ok(DisciplinesMapper.INSTANCE.mapListDisciplinesDetail(disciplinesOutput));
     }
+
+
+
 
 }

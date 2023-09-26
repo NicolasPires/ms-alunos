@@ -142,6 +142,27 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createDisciplines
+      summary: Cria uma nova disciplina
+      tags:
+        - Disciplines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisciplinesInput'
+      responses:
+        '201':
+          description: Disciplina criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisciplinesDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /disciplines/{disciplineId}:
     parameters:
       - schema:
@@ -229,6 +250,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DisciplinesDetail'
+
     DisciplinesDetail:
       type: object
       properties:
@@ -239,6 +261,39 @@ components:
         name:
           type: string
           example: 'Matematica'
+        grade:
+          type: integer
+          format: int64
+          example: 10
+    DisciplinesInput:
+      description: 'Template for creating or changing discipline'
+      type: object
+      required:
+        - name
+        - grade
+      properties:
+        name:
+          type: string
+          example: 'Ciencias'
+        grade:
+          type: integer
+          format: int64
+          example: 10
+    DisciplinesOutput:
+      description: 'Template for showing data of discipline'
+      type: object
+      required:
+        - disciplineId
+        - name
+        - grade
+      properties:
+        disciplineId:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Ciencias'
         grade:
           type: integer
           format: int64

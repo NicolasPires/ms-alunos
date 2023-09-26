@@ -1,11 +1,13 @@
 package com.nksolucoes.msalunos.repository;
 
-import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesInput;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesOutput;
 
 import java.util.List;
 
 public interface DisciplinesRepository {
-    List<DisciplinesResponse> getAll();
-    DisciplinesResponse getDisciplineById(Long disciplineId);
 
+    List<DisciplinesOutput> getAll();
+    DisciplinesOutput getDisciplineById(Long disciplineId);
+    DisciplinesOutput createDiscipline(DisciplinesInput disciplinesInput);
 }

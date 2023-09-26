@@ -2,7 +2,8 @@ package com.nksolucoes.msalunos.datasources;
 
 import com.nksolucoes.msalunos.datasources.clients.DisciplinesClient;
 import com.nksolucoes.msalunos.repository.DisciplinesRepository;
-import com.nksolucoes.msalunos.transportlayer.responses.DisciplinesResponse;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesInput;
+import com.nksolucoes.msalunos.transportlayer.documentacao.model.DisciplinesOutput;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ public class DisciplinesDataSource implements DisciplinesRepository {
 
     private final DisciplinesClient disciplinesClient;
 
-    private Map<Long, DisciplinesResponse> CACHE = new HashMap<>();
+    private Map<Long, DisciplinesOutput> CACHE = new HashMap<>();
 
     public DisciplinesDataSource(DisciplinesClient disciplinesClient) {
         this.disciplinesClient = disciplinesClient;
@@ -27,26 +28,32 @@ public class DisciplinesDataSource implements DisciplinesRepository {
 
     @Override
     @CircuitBreaker(name = "DISCIPLINES_ALL_CB")
-    public List<DisciplinesResponse> getAll() {
+    public List<DisciplinesOutput> getAll() {
         return  this.disciplinesClient.getDisciplines();
     }
 
     @Override
     @CircuitBreaker(name = "DISCIPLINES_CB", fallbackMethod = "getAllFallBack")
-    public DisciplinesResponse getDisciplineById(Long disciplineId) {
-        DisciplinesResponse disciplinesResponse = null;
+    public DisciplinesOutput getDisciplineById(Long disciplineId) {
+        DisciplinesOutput disciplinesOutput = null;
 
         LOGGER.info("Buscando a disciplina por Id");
-        disciplinesResponse = this.disciplinesClient.getDisciplinesById(disciplineId);
+        disciplinesOutput = this.disciplinesClient.getDisciplinesById(disciplineId);
 
         LOGGER.info("Alimentando Cache");
-        CACHE.put(disciplineId, disciplinesResponse);
+        CACHE.put(disciplineId, disciplinesOutput);
 
-        return disciplinesResponse;
+        return disciplinesOutput;
     }
 
-    private DisciplinesResponse getAllFallBack(Long disciplineId, Throwable ex) {
+    @Override
+    public DisciplinesOutput createDiscipline(DisciplinesInput disciplinesInput) {
+        return this.disciplinesClient.createDiscipline(disciplinesInput);
+    }
+
+    private DisciplinesOutput getAllFallBack(Long disciplineId, Throwable ex) {
         LOGGER.info("Buscando do Cache");
-        return CACHE.getOrDefault(disciplineId, DisciplinesResponse.builder().build());
+        DisciplinesOutput disciplinesOutput = new DisciplinesOutput();
+        return CACHE.getOrDefault(disciplineId, disciplinesOutput);
     }
 }
